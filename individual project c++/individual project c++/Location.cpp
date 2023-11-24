@@ -70,7 +70,7 @@ public:
 		}
 		delete[]zone;                     //delete the current zone
 		zone = copy_of_zone;              //reinitialize zone with a greater size
-//WE NEED TO MAKE AN ASSIGN OPERATOR FOR ZONE INFO, HUSTON WE HAVE A PROBLEM!
+//WE NEED TO MAKE AN ASSIGN OPERATOR FOR ZONE INFO!
 	}
 
 

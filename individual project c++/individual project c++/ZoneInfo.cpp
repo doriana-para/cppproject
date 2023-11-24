@@ -46,6 +46,42 @@ public:
 			this->end = end;
 		}
 
+//equal operator
+		void operator= (const ZoneInfo& z) {
+			this->name = z.name;
+			this->start = z.start;
+			this->end = z.end;
 
+		}
+//+ operator
+		void operator+(int move_zone) {
+			this->start += move_zone;
+			this->end += move_zone;
+		}
+//- operator 
+		void operator-(int move_zone) {
+			this->start -= move_zone;
+			this->end -= move_zone;
+		}
+// <<operator 
+	
 
+// >>operator 
+		
+		friend ostream& operator<<(ostream& output, ZoneInfo z);
+		friend void operator>>(istream& input, ZoneInfo& z);
 };
+
+ostream& operator<<(ostream& output, ZoneInfo z) {
+output << "The name of the zone:" << z.name << endl;
+output << "The beginning seat: " << z.start << endl;
+output << "The end seat: " << z.end;
+	return output;
+}
+
+void operator>>(istream& input, ZoneInfo& z) {
+	cout << endl << "Give a new zone ";
+	input >> z.name;
+	input >> z.start;
+	input >> z.end;
+}
