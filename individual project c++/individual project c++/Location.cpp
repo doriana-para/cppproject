@@ -12,6 +12,7 @@ private:
 	ZoneInfo *zone;
 	int size;                //number of zones
 	ZoneInfo* copy_of_zone; // used for holding a copy of the zone
+	char** zone_locations;  //stores the location of the zones
 	
 public:
  //default constructor
@@ -34,7 +35,11 @@ public:
 		seatMap = new int* [rows]; //first pointer gets assigned an array of size rows
 		for (int i = 0; i < rows; i++) { //adding the column array to every row
 			seatMap[i] = new int[rows / number_seats]; //each pointer in seatMap is pointing to a new array
-	}
+		}
+		zone_locations = new char* [rows]; //first pointer gets assigned an array of size rows
+		for (int i = 0; i < rows; i++) { //adding the column array to every row
+			zone_locations[i] = new char[rows / number_seats]; //each pointer in zone_locations is pointing to a new array
+		}
 	}
 
 //copy constructor
@@ -69,11 +74,30 @@ public:
 			copy_of_zone[i] = zone[i];
 		}
 		delete[]zone;                     //delete the current zone
-		zone = copy_of_zone;              //reinitialize zone with a greater size
-//WE NEED TO MAKE AN ASSIGN OPERATOR FOR ZONE INFO!
+		zone = copy_of_zone; //reinitialize zone with a greater size
+		zone[size - 1].setName(zone_name);
+		zone[size - 1].setStart(start_zone);
+		zone[size - 1].setEnd(end_zone);
+		update_zone();
 	}
 
+	 //dynamically allocated vector of characters
 
+	void update_zone() { //add the current zones to the bidimensional array
+		int row_lenght;
+		char index = 'A';
+		row_lenght = number_seats / rows; //the number of seats in a row
+		for (int i = 0; i < size; i++) {  //loop through the zone array
+			for (int j = zone[i].getStart(); j < zone[i].getEnd(); j++) { //loop through the rows
+
+				for (int k = 0; k < row_lenght; k++) //loop through the seats in each row
+				{
+					zone_locations[j][k] = index;
+				}
+		   
+			index++;
+	}
+	}
 
 	//getter
 	int **getseatMap() {

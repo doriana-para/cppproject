@@ -5,9 +5,9 @@ using namespace std;
 class ZoneInfo {
 private:
 	string name;
-	int start;// it stores the beginning seat number for the zone
-	int end;// it stores the final seat number for the zone
-
+	int start;// it stores the beginning seat number for the zone by rows
+	int end;// it stores the final seat number for the zone by rows
+	
 public:
 	//default constructor
 	ZoneInfo() {
@@ -85,3 +85,5 @@ void operator>>(istream& input, ZoneInfo& z) {
 	input >> z.start;
 	input >> z.end;
 }
+
+//add 2 more f
