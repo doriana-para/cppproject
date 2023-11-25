@@ -47,7 +47,7 @@ public:
 		}
 
 //equal operator
-		void operator= (const ZoneInfo& z) {
+		void operator= (const ZoneInfo z) {
 			this->name = z.name;
 			this->start = z.start;
 			this->end = z.end;
@@ -68,15 +68,15 @@ public:
 
 // >>operator 
 		
-		friend ostream& operator<<(ostream& output, ZoneInfo z);
-		friend void operator>>(istream& input, ZoneInfo& z);
+		//friend ostream& operator<<(ostream& output, ZoneInfo z);
+		//friend void operator>>(istream& input, ZoneInfo& z);
 };
-
-ostream& operator<<(ostream& output, ZoneInfo z) {
+/*
+void  operator<<(ostream& output, ZoneInfo z) {
 output << "The name of the zone:" << z.name << endl;
 output << "The beginning seat: " << z.start << endl;
 output << "The end seat: " << z.end;
-	return output;
+//no return;
 }
 
 void operator>>(istream& input, ZoneInfo& z) {
@@ -85,5 +85,5 @@ void operator>>(istream& input, ZoneInfo& z) {
 	input >> z.start;
 	input >> z.end;
 }
-
+*/
 //add 2 more f
