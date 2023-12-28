@@ -1,21 +1,26 @@
 
 #include "Ticket.h"
 #include <cstdlib>
+using namespace std;
 
 Ticket::Ticket() : name("") {
     this->id = -1;
-    this->seat_number = -1;
+    this->row_num = -1;
+    this->col_num = -1;
     this->zoneName = "";
 }
 
-Ticket::Ticket(std::string name, int seat_number, std::string zoneName) : name(name) {
-    this->seat_number = seat_number;
+Ticket::Ticket(string name, int row_num, int col_num, string zoneName) : name(name) {
+    this->row_num = row_num;
+    this->col_num = col_num;
     this->zoneName = zoneName;
+    srand(time(NULL));
     this->id = rand();
 }
 
 Ticket::Ticket(const Ticket& t) {
-    this->seat_number = t.seat_number;
+    this->row_num = t.row_num;
+    this->col_num = t.col_num;
     this->zoneName = t.zoneName;
     this->id = t.id;
 }
@@ -26,7 +31,8 @@ Ticket::~Ticket() {
 
 void Ticket::operator=(const Ticket t) {
     this->id = t.id;
-    this->seat_number = t.seat_number;
+    this->row_num = t.row_num;
+    this->col_num = t.col_num;
     this->zoneName = t.zoneName;
 }
 
@@ -55,15 +61,15 @@ int Ticket::getId() {
     return this->id;
 }
 
-int Ticket::getSeatNumber() {
-    return this->seat_number;
+int Ticket::getRowNumber() {
+    return this->row_num;
 }
 
-std::string Ticket::getZoneName() {
+string Ticket::getZoneName() {
     return this->zoneName;
 }
 
-std::string Ticket::getName() {
+string Ticket::getName() {
     return this->name;
 }
 
@@ -75,19 +81,32 @@ void Ticket::setSeatNumber(int seat_Number) {
     this->seat_number = seat_Number;
 }
 
-void Ticket::setZoneName(std::string zoneName) {
+void Ticket::setZoneName(string zoneName) {
     this->zoneName = zoneName;
 }
 
-std::ostream& operator<<(std::ostream& output, Ticket t) {
-    output << "Your unique ID Number: " << t.getId() << std::endl;
-    return output;
-}
+void operator>>(istream& input, Ticket& t) {
+    
+    cout << endl << "Create a new Ticket ";
+    cout << endl << "Enter Zone Name: ";
 
-void operator>>(std::istream& input, Ticket& t) {
-    std::cout << std::endl << "Create a new Ticket ";
-    std::cout << std::endl << "Enter Zone Name: ";
+    cout << "The seat number is : ";
+    input >> t.seat_number;
+    cout << "The zone name is : ";
     input >> t.zoneName;
+}
+   
+
+    ostream& operator<<(ostream& output, const Ticket& t) {
+
+        output << "Your unique ID Number: " << t.id << endl;
+        output << "The name is: " << t.name << endl;
+        output << "The seat number is: " << t.seat_number << endl;
+        output << "The zone number is: " << t.zoneName << endl;
+
+        return output;
+
+    
 }
 
 

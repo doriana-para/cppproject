@@ -28,6 +28,7 @@ public:
     void operator++(int x);
 
     void add_ticket(Ticket t);
+    Ticket create_ticket(string, string);
     void add_zone(int start_zone, int end_zone, string zone_name);
     int find_zone(string zoneName);
     void update_zone();

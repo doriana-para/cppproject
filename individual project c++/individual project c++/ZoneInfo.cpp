@@ -1,4 +1,5 @@
 #include "ZoneInfo.h"
+using namespace std;
 
 ZoneInfo::ZoneInfo() {
     this->name = "";
@@ -12,7 +13,7 @@ ZoneInfo::ZoneInfo(std::string name, int start, int end) {
     this->end = end;
 }
 
-std::string ZoneInfo::getName() {
+string ZoneInfo::getName() {
     return this->name;
 }
 
@@ -51,15 +52,15 @@ void ZoneInfo::operator-(int move_zone) {
     this->end -= move_zone;
 }
 
-std::ostream& operator<<(std::ostream& output, ZoneInfo z) {
-    output << "The name of the zone:" << z.name << std::endl;
-    output << "The beginning row: " << z.start << std::endl;
+ostream& operator<<(ostream& output, ZoneInfo z) {
+    output << "The name of the zone:" << z.name << endl;
+    output << "The beginning row: " << z.start << endl;
     output << "The ending row: " << z.end;
     return output;
 }
 
-void operator>>(std::istream& input, ZoneInfo& z) {
-    std::cout << std::endl << "Give a new zone start and end ";
+void operator>>(istream& input, ZoneInfo& z) {
+    cout << endl << "Give a new zone start and end ";
     input >> z.start;
     input >> z.end;
 }

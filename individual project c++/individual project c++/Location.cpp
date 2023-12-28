@@ -53,7 +53,7 @@ Location::~Location() {
              delete[] seatMap[i];
          }
          delete[] seatMap;*/
-    cout << endl << "Calling destructor";
+  
     if (this->zone != nullptr) {
         delete[] this->zone;
     }
@@ -69,14 +69,18 @@ void Location::operator=(const Location& l) {
     this->time = l.time;
     this->date = l.date;
     this->zone = l.zone;
-    for (int i = 0; i < rows; i++) { //adding the column array to every row
-        for (int j = 0; j < number_seats / rows; j++) {
-            seatMap[i][j] = l.seatMap[i][j];
+    this->seatMap = new int* [this->rows]; //first pointer gets assigned an array of size rows
+    for (int i = 0; i < this->rows; i++) { //adding the column array to every row
+        this->seatMap[i] = new int[this->rows / this->number_seats]; //each pointer in seatMap is pointing to a new array
+    }
+    for (int i = 0; i < this->rows; i++) { //adding the column array to every row
+        for (int j = 0; j < this->number_seats / this->rows; j++) {
+            this->seatMap[i][j] = l.seatMap[i][j];
         }
     }
-    for (int i = 0; i < rows; i++) { //adding the column array to every row
-        for (int j = 0; j < number_seats / rows; j++) {
-            zone_locations[i][j] = l.zone_locations[i][j];
+    for (int i = 0; i < this->rows; i++) { //adding the column array to every row
+        for (int j = 0; j < this->number_seats / this->rows; j++) {
+            this->zone_locations[i][j] = l.zone_locations[i][j];
         }
     }
 }
@@ -100,8 +104,35 @@ void Location::add_ticket(Ticket t) {
     for (int i = 0; i < amount_of_tickets; i++) {
         copy_of_tickets[i] = tickets[i];
     }
+
     delete[] tickets;
     tickets = copy_of_tickets;
+}
+
+Ticket Location::create_ticket(string name, string zoneName){
+    int startingRowOfZone;
+    int endingRowOfZone;
+    int columnSeat;
+    
+    for(int i = 0; i < size; i++){
+        if(zone[i].getName() == zoneName){
+            startingRowOfZone = zone[i].getStart();
+            endingRowOfZone = zone[i].getEnd();
+        }
+    }
+    
+    for(int i = startingRowOfZone; i < endingRowOfZone; i++){
+        for(int j = 0; j <= rows/number_seats; j++){
+            if(seatMap[i][j] == 0){
+                columnSeat = j;   //finding the first available seat in the zone and assign it to a person
+                seatMap[i][j] = 1;//the seat is assigned
+                goto jump;        //getting out of the 2 for loops
+            }
+        }
+    }
+    jump:
+    
+
 }
 
 void Location::add_zone(int start_zone, int end_zone, string zone_name) {
@@ -214,14 +245,17 @@ void operator>>(istream& input, Location& l) {
     cout << endl << "Give new location info ";
     cout << "Number of seats: ";
     input >> l.number_seats;
-    cout << "New date: ";
-    input >> l.date;
+    cout << "Number of rows: ";
+    input >> l.rows;
     cout << "New Time";
     input >> l.time;
+    cout << "New date: ";
+    input >> l.date;
 }
 
 ostream& operator<<(ostream& os, const Location& l) {
-    os << "The Number of Seats:" << l.number_seats << endl;
+    os << "The Number of Seats: " << l.number_seats << endl;
+    os << "The number of rows: " << l.rows << endl;
     os << "The time of the event: " << l.time << endl;
     os << "The date of the event: " << l.date;
     return os;

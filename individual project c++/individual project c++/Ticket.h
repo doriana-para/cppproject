@@ -1,17 +1,18 @@
 #pragma once
 #include <iostream>
 #include <string>
-
+using namespace std;
 class Ticket {
 private:
     int id;
-    int seat_number;
-    std::string zoneName;
-    const std::string name;
+    int row_num;
+    int col_num;
+    string zoneName;
+    const string name;
 
 public:
     Ticket();
-    Ticket(std::string name, int seat_number, std::string zoneName);
+    Ticket(string name, int row_num, int col_num, string zoneName);
     Ticket(const Ticket& t);
     ~Ticket();
 
@@ -23,14 +24,17 @@ public:
     void newId();
 
     int getId();
-    int getSeatNumber();
-    std::string getZoneName();
-    std::string getName();
+    int getRowNumber();
+    int getColNumber();
+    string getZoneName();
+    string getName();
 
     void setId(int id);
-    void setSeatNumber(int seat_Number);
-    void setZoneName(std::string zoneName);
+    void setRowNumber(int row_num);
+    void setColNumber(int col_num);
+    void setZoneName(string zoneName);
 
-    friend std::ostream& operator<<(std::ostream& output, Ticket t);
-    friend void operator>>(std::istream& input, Ticket& t);
+    friend void operator>>(istream& input, Ticket& t);
+    friend ostream& operator<<(ostream& output, const Ticket& t);
+ 
 };
