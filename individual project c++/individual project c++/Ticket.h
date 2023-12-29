@@ -9,6 +9,7 @@ private:
     int col_num;
     string zoneName;
     const string name;
+    int seat_number;
 
 public:
     Ticket();

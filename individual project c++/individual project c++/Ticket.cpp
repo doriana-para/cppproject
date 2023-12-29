@@ -53,18 +53,20 @@ void Ticket::check(Ticket* ticket_array, int size_of_ticket_array) {
     }
 }
 
-void Ticket::newId() {
-    this->id = rand();
-}
 
 int Ticket::getId() {
     return this->id;
 }
 
+
 int Ticket::getRowNumber() {
     return this->row_num;
 }
 
+int Ticket::getColNumber()
+{
+    return this->col_num;
+}
 string Ticket::getZoneName() {
     return this->zoneName;
 }
@@ -73,17 +75,29 @@ string Ticket::getName() {
     return this->name;
 }
 
+
+
+void Ticket::newId() {
+    this->id = rand();
+}
+
 void Ticket::setId(int id) {
     this->id = id;
 }
 
-void Ticket::setSeatNumber(int seat_Number) {
-    this->seat_number = seat_Number;
+
+void Ticket::setRowNumber(int row) {
+    this->row_num = row;
+}
+
+void Ticket::setColNumber(int col) {
+    this->col_num = col;
 }
 
 void Ticket::setZoneName(string zoneName) {
     this->zoneName = zoneName;
 }
+
 
 void operator>>(istream& input, Ticket& t) {
     

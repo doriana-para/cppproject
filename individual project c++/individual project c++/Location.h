@@ -39,6 +39,7 @@ public:
     int getTime();
     string getDate();
     ZoneInfo* getZone();
+    int getSize();
 
     void setseatMap(int** seatMap);
     void setNumber_seats(int number_seats);

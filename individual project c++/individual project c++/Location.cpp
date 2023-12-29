@@ -112,6 +112,7 @@ void Location::add_ticket(Ticket t) {
 Ticket Location::create_ticket(string name, string zoneName){
     int startingRowOfZone;
     int endingRowOfZone;
+    int rowSeat;
     int columnSeat;
     
     for(int i = 0; i < size; i++){
@@ -126,13 +127,15 @@ Ticket Location::create_ticket(string name, string zoneName){
             if(seatMap[i][j] == 0){
                 columnSeat = j;   //finding the first available seat in the zone and assign it to a person
                 seatMap[i][j] = 1;//the seat is assigned
+                rowSeat = i;
                 goto jump;        //getting out of the 2 for loops
             }
         }
     }
     jump:
     
-
+    Ticket t(name, rowSeat, columnSeat, zoneName);
+    return t;
 }
 
 void Location::add_zone(int start_zone, int end_zone, string zone_name) {
@@ -217,16 +220,71 @@ ZoneInfo* Location::getZone() {
     return this->zone;
 }
 
+int Location::getSize() {
+    return this->size;
+}
+
 void Location::setseatMap(int** seatMap) {
     this->seatMap = seatMap;
 }
 
 void Location::setNumber_seats(int number_seats) {
     this->number_seats = number_seats;
+
+    //This if statement and for loop are to change the size of the seatMap and the Zone_locations
+    //We do this because if we change the size of the rows then we need to make the seatMap
+    //the same size
+    if(rows != -1){
+        for (int i = 0; i < rows; i++) {
+            delete[] seatMap[i];
+        }
+        delete[] seatMap;
+
+        seatMap = new int* [rows]; //first pointer gets assigned an array of size rows
+        for (int i = 0; i < rows; i++) { //adding the column array to every row
+            seatMap[i] = new int[rows / number_seats]; //each pointer in seatMap is pointing to a new array
+        }
+
+        for (int i = 0; i < rows; i++) {
+            delete[] zone_locations[i];
+        }
+        delete[] zone_locations;
+
+        zone_locations = new char* [rows]; //first pointer gets assigned an array of size rows
+        for (int i = 0; i < rows; i++) { //adding the column array to every row
+            zone_locations[i] = new char[rows / number_seats]; //each pointer in zone_locations is pointing to a new array
+        }
+    }
 }
 
 void Location::setRows(int rows) {
     this->rows = rows;
+
+
+    //This if statement and for loop are to change the size of the seatMap and the Zone_locations
+    //We do this because if we change the size of the rows then we need to make the seatMap
+    //the same size
+    if(number_seats != -1){
+        for (int i = 0; i < rows; i++) {
+            delete[] seatMap[i];
+        }
+        delete[] seatMap;
+
+        seatMap = new int* [rows]; //first pointer gets assigned an array of size rows
+        for (int i = 0; i < rows; i++) { //adding the column array to every row
+            seatMap[i] = new int[rows / number_seats]; //each pointer in seatMap is pointing to a new array
+        }
+
+        for (int i = 0; i < rows; i++) {
+            delete[] zone_locations[i];
+        }
+        delete[] zone_locations;
+
+        zone_locations = new char* [rows]; //first pointer gets assigned an array of size rows
+        for (int i = 0; i < rows; i++) { //adding the column array to every row
+            zone_locations[i] = new char[rows / number_seats]; //each pointer in zone_locations is pointing to a new array
+        }
+    }
 }
 
 void Location::setTime(int time) {
