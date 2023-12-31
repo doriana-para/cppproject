@@ -7,8 +7,6 @@ ZONE
 VIP
 1
 30
-TICKET
-Tom
-20
+
 
 

@@ -7,8 +7,8 @@ using namespace std;
 class Location {
 private:
     int** seatMap;
-    int number_seats;
-    int rows;
+    int number_seats = 1;
+    int rows = 1;
     int time;
     string date;
     ZoneInfo* zone;

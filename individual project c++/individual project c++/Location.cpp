@@ -4,11 +4,21 @@ using namespace std;
 Location::Location() {
 
     size = 0;
-    this->number_seats = 0;
-    this->rows = -1;
+    this->number_seats = 1;
+    this->rows = 1;
     this->time = -1;
     this->date = "";
-    this->zone = new ZoneInfo[number_seats];
+    seatMap = new int* [1]; //first pointer gets assigned an array of size rows
+    for (int i = 0; i < rows; i++) { //adding the column array to every row
+        seatMap[0] = new int[1]; //each pointer in seatMap is pointing to a new array
+    }
+
+    //zone_locations = new char* [1]; //first pointer gets assigned an array of size rows
+    //for (int i = 0; i < rows; i++) { //adding the column array to every row
+    cout << "test1";
+    //zone_locations[0] = new char[1]; //each pointer in zone_locations is pointing to a new array
+//}
+    this->zone = new ZoneInfo[this->number_seats];
 }
 
 Location::Location(int number_seats, int rows, int time, string date) {
@@ -19,14 +29,16 @@ Location::Location(int number_seats, int rows, int time, string date) {
     this->date = date;
     this->zone = nullptr;
 
+
     seatMap = new int* [rows]; //first pointer gets assigned an array of size rows
     for (int i = 0; i < rows; i++) { //adding the column array to every row
-        seatMap[i] = new int[rows / number_seats]; //each pointer in seatMap is pointing to a new array
+        seatMap[i] = new int[number_seats / rows]; //each pointer in seatMap is pointing to a new array
     }
+
 
     zone_locations = new char* [rows]; //first pointer gets assigned an array of size rows
     for (int i = 0; i < rows; i++) { //adding the column array to every row
-        zone_locations[i] = new char[rows / number_seats]; //each pointer in zone_locations is pointing to a new array
+        zone_locations[i] = new char[number_seats / rows]; //each pointer in zone_locations is pointing to a new array
     }
 }
 
@@ -35,6 +47,7 @@ Location::Location(const Location& loc) {
     this->rows = loc.rows;
     this->time = loc.time;
     this->date = loc.date;
+
 
     this->seatMap = new int* [this->rows]; //first pointer gets assigned an array of size rows
     for (int i = 0; i < this->rows; i++) { //adding the column array to every row
@@ -53,7 +66,7 @@ Location::~Location() {
              delete[] seatMap[i];
          }
          delete[] seatMap;*/
-  
+
     if (this->zone != nullptr) {
         delete[] this->zone;
     }
@@ -109,22 +122,22 @@ void Location::add_ticket(Ticket t) {
     tickets = copy_of_tickets;
 }
 
-Ticket Location::create_ticket(string name, string zoneName){
+Ticket Location::create_ticket(string name, string zoneName) {
     int startingRowOfZone;
     int endingRowOfZone;
     int rowSeat;
     int columnSeat;
-    
-    for(int i = 0; i < size; i++){
-        if(zone[i].getName() == zoneName){
+
+    for (int i = 0; i < size; i++) {
+        if (zone[i].getName() == zoneName) {
             startingRowOfZone = zone[i].getStart();
             endingRowOfZone = zone[i].getEnd();
         }
     }
-    
-    for(int i = startingRowOfZone; i < endingRowOfZone; i++){
-        for(int j = 0; j <= rows/number_seats; j++){
-            if(seatMap[i][j] == 0){
+
+    for (int i = startingRowOfZone; i < endingRowOfZone; i++) {
+        for (int j = 0; j <= rows / number_seats; j++) {
+            if (seatMap[i][j] == 0) {
                 columnSeat = j;   //finding the first available seat in the zone and assign it to a person
                 seatMap[i][j] = 1;//the seat is assigned
                 rowSeat = i;
@@ -132,8 +145,8 @@ Ticket Location::create_ticket(string name, string zoneName){
             }
         }
     }
-    jump:
-    
+jump:
+
     Ticket t(name, rowSeat, columnSeat, zoneName);
     return t;
 }
@@ -147,9 +160,9 @@ void Location::add_zone(int start_zone, int end_zone, string zone_name) {
     for (int i = 0; i < size; i++) {  //copies by value zone to copy_of_zone
         copy_of_zone[i] = zone[i];
     }
-    copy_of_zone[size - 1].setName(zone_name);
-    copy_of_zone[size - 1].setStart(start_zone);
-    copy_of_zone[size - 1].setEnd(end_zone);
+    copy_of_zone[size].setName(zone_name);
+    copy_of_zone[size].setStart(start_zone);
+    copy_of_zone[size].setEnd(end_zone);
 
     delete[]zone;                     //delete the current zone
     zone = copy_of_zone;             //reinitialize zone with a greater size
@@ -173,7 +186,7 @@ void Location::update_zone() {  //add the current zones to the bidimensional arr
     row_lenght = number_seats / rows; //the number of seats in a row
     for (int i = 0; i < size; i++) {  //loop through the zone array
         for (int j = zone[i].getStart(); j < zone[i].getEnd(); j++) { //loop through the rows
-            for (int k = 0; k < row_lenght; k++){ //loop through the seats in each row
+            for (int k = 0; k < row_lenght; k++) { //loop through the seats in each row
                 zone_locations[j][k] = index;
             }
             index++;
@@ -234,7 +247,7 @@ void Location::setNumber_seats(int number_seats) {
     //This if statement and for loop are to change the size of the seatMap and the Zone_locations
     //We do this because if we change the size of the rows then we need to make the seatMap
     //the same size
-    if(rows != -1){
+    if (rows != -1) {
         for (int i = 0; i < rows; i++) {
             delete[] seatMap[i];
         }
@@ -258,14 +271,15 @@ void Location::setNumber_seats(int number_seats) {
 }
 
 void Location::setRows(int rows) {
+    int old = this->rows;
     this->rows = rows;
 
 
     //This if statement and for loop are to change the size of the seatMap and the Zone_locations
     //We do this because if we change the size of the rows then we need to make the seatMap
     //the same size
-    if(number_seats != -1){
-        for (int i = 0; i < rows; i++) {
+    if (number_seats != -1) {
+        for (int i = 0; i < old; i++) {
             delete[] seatMap[i];
         }
         delete[] seatMap;
@@ -275,7 +289,7 @@ void Location::setRows(int rows) {
             seatMap[i] = new int[rows / number_seats]; //each pointer in seatMap is pointing to a new array
         }
 
-        for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < old; i++) {
             delete[] zone_locations[i];
         }
         delete[] zone_locations;
@@ -315,6 +329,6 @@ ostream& operator<<(ostream& os, const Location& l) {
     os << "The Number of Seats: " << l.number_seats << endl;
     os << "The number of rows: " << l.rows << endl;
     os << "The time of the event: " << l.time << endl;
-    os << "The date of the event: " << l.date;
+    os << "The date of the event: " << l.date<<endl;
     return os;
 }
