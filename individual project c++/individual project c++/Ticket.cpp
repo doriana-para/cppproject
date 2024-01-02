@@ -54,6 +54,7 @@ void Ticket::check(Ticket* ticket_array, int size_of_ticket_array) {
 }
 
 
+
 int Ticket::getId() {
     return this->id;
 }

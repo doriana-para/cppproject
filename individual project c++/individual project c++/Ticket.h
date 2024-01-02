@@ -23,6 +23,7 @@ public:
 
     void check(Ticket* ticket_array, int size_of_ticket_array);
     void newId();
+    void writing_bin();
 
     int getId();
     int getRowNumber();

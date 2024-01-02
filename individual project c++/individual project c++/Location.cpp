@@ -125,8 +125,8 @@ void Location::add_ticket(Ticket t) {
 Ticket Location::create_ticket(string name, string zoneName) {
     int startingRowOfZone;
     int endingRowOfZone;
-    int rowSeat;
-    int columnSeat;
+    int rowSeat = 0;
+    int columnSeat = 0;
 
     for (int i = 0; i < size; i++) {
         if (zone[i].getName() == zoneName) {
@@ -148,6 +148,7 @@ Ticket Location::create_ticket(string name, string zoneName) {
 jump:
 
     Ticket t(name, rowSeat, columnSeat, zoneName);
+    //add_ticket(t);
     return t;
 }
 

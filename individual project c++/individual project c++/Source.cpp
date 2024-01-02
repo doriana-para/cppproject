@@ -6,6 +6,8 @@
 #include <string>
 using namespace std;
 
+
+
 int main() {
     //new loc with parameters
     //Location loc1(100, 8, 12, "23/01/2024");
@@ -60,12 +62,17 @@ int main() {
 
     Location l1(10, 5, 1, "04/23/2023");
     ZoneInfo* zone_array = l1.getZone();
+    ofstream outputBinaryFile("Ticket_data.bin", ios::out | ios::binary);
+
 
 
     if (userI == "f") {
         string event_info;
-
+        //read from text file
         ifstream inputFile("readMe.txt", ifstream::in);
+      //write in binary file
+       
+
         if (!inputFile.is_open()) {
             cout << endl << "The readMe.txt is missing";
         }
@@ -197,7 +204,20 @@ int main() {
 
                 string ticket_zone;
                 cin >> ticket_zone;
-                
+
+                Ticket t = l1.create_ticket(ticket_name, ticket_zone);
+
+                if (outputBinaryFile.is_open()) {
+                    cout << "test";
+                    string nm = t.getName();
+                    const int length = nm.length(); 
+                    char* char_array = new char[length + 1]; 
+                    strcpy(char_array, nm.c_str()); 
+                    //string nm = t.getName();
+
+                    outputBinaryFile.write((char*)&(char_array), sizeof(char));
+                }
+                cout << "test1";
             }
         }
     }
