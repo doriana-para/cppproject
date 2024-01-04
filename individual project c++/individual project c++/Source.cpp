@@ -9,71 +9,25 @@ using namespace std;
 
 
 int main() {
-    //new loc with parameters
-    //Location loc1(100, 8, 12, "23/01/2024");
-    //cout << "Loc1 details" << endl << loc1 << endl;
 
-    //assign = op to make a copy of location
+    //Adding an interface
 
-    //Location loc2 = loc1;
-    //cout << "Loc2 details" << endl << loc2 << endl;
-
-
-    //print out bool if (loc1=loc2) return false, true
-    //bool isEqual = (loc1 == loc2);
-    //cout << "Check if loc1 and loc2 are equal" << endl << isEqual;
-
-    //new ticket with param
-    //Ticket newTicket("John", 20, 30, "vip");
-    //cout << "Ticket details" << endl << newTicket << endl;
-
-    //change no of seats inside the ticket
-
-
-    //add this ticket to location
-    //add_ticket(Ticket newTicket);
-
-
-    //make a zone without param
-   /* ZoneInfo newZone();
-    ZoneInfo::ZoneInfo() {
-        this->name = "zone A";
-        this->start = 1;
-        this->end = 30;
-    }*/
-    //set the name, the starting row, ending row to whatever
-
-    //cout on zone
-
-    //add zone to location
-
-    //find the zone you just made function
-
-    //update zone
-
-    //cout location
-
-    //reading from file
-
-    
     cout << "Welcome! Would you like to use a text file (type 'f') or user input (type 'i')" << endl;
     string userI;
     cin >> userI;
 
     Location l1(10, 5, 1, "04/23/2023");
-    ZoneInfo* zone_array = l1.getZone();
+    ZoneInfo* zone_array = NULL;
     ofstream outputBinaryFile("Ticket_data.bin", ios::out | ios::binary);
 
-
+    //Read from text file
 
     if (userI == "f") {
         string event_info;
-        //read from text file
         ifstream inputFile("readMe.txt", ifstream::in);
-      //write in binary file
-       
 
-        if (!inputFile.is_open()) {
+
+     if (!inputFile.is_open()) {
             cout << endl << "The readMe.txt is missing";
         }
         
@@ -81,6 +35,7 @@ int main() {
 
             cout << endl << "The readMe.txt is available" << endl;
         }
+
         //In order to run all the code, we need to make location first
         inputFile >> event_info;
         if (event_info == "LOCATION") {
@@ -110,7 +65,9 @@ int main() {
             
 
             if (event_info == "ZONE") {
-                //This helps to make a new zone
+
+                //Create a new zone
+
                 inputFile >> event_info;
                 string name = event_info;
                 inputFile >> event_info;
@@ -119,11 +76,36 @@ int main() {
                 int end_row = stoi(event_info);
 
                 l1.add_zone(start_row, end_row, name);
-                cout << l1.getZone()[0];
+                
+            }
+
+            if(event_info == "TICKET"){
+                //Make a ticket from file info
+                //Then add the ticket name to the binary file
+                inputFile >> event_info;
+                string name=event_info;
+                inputFile >> event_info;
+                string zoneName = event_info;
+                
+                Ticket t1 = l1.create_ticket(name, zoneName);
+
+
+                if (outputBinaryFile.is_open()) {
+                    outputBinaryFile.write((char*)&(t1), sizeof(Ticket));
+
+                    
+                }
             }
         }
-    }
-    else if (userI == "i") {
+        for (int i = 0; i < l1.getSize(); i++) {
+            cout << l1.getZone()[i];
+        }
+        for (int i = 0; i < l1.getAmount_of_Tickets(); i++) {
+            cout << l1.getTickets()[i];
+        }
+        outputBinaryFile.close();
+
+    }else if (userI == "i") {
         cout << "The first step is to make a location, so please input the number of seats for this location: " << endl;
 
 
@@ -158,40 +140,60 @@ int main() {
 
             //This if statement makes a new zone
             if (userI == "z") {
-                //delete[] zone_array;
-                //zone_array = l1.getZone();
+                bool alreadyAssigned=false;
+                int i = 0;
+                if(zone_array != NULL){
+                    delete[] zone_array;
+                }
+                zone_array = l1.getZone();
                 //the zone start and end doesnt intersect with any other current zones
 
-
-
-
-
-                for (int i = 0; i <= l1.getSize(); i++) {
-
-                    //first do while
-                    do {
-                        cout << "Please enter a valid starting row: " << endl;
-                        cin >> start_zone;
-                    } while (start_zone > l1.getRows() && (start_zone >= zone_array[i].getStart() && start_zone <= zone_array[i].getEnd()));
-
+                //first do while
+                do{
+                     alreadyAssigned = false;
+                    cout << "Please enter a valid starting row: " << endl;
+                    cin >> start_zone;
+                    for(int j = 0; j < l1.getSize(); j++){
+                        if(start_zone == zone_array[j].getStart() || start_zone == zone_array[j].getEnd()){
+                            alreadyAssigned = true;
+                            cout << "The zone row number you entered is already occupied by an existing zone" << endl;
+                        }
+                    }
+                }while(start_zone > l1.getRows() || alreadyAssigned);
+                
 
                     //second do while
-                    do {
-                        cout << "Please enter a valid ending row: " << endl;
-                        cin >> end_zone;
-
-                    } while (end_zone > l1.getRows() && (end_zone >= zone_array[i].getStart() && end_zone <= zone_array[i].getEnd()));
-                    //NEED TO FIX THIS _____________________________________________________
-                    cout << "Please enter the zone name: " << endl;
+                do{
+                     alreadyAssigned = false;
+                    cout << "Please enter a valid ending row: " << endl;
+                    cin >> end_zone;
+                    for(int j = 0; j < l1.getSize(); j++){
+                        if(end_zone == zone_array[j].getStart() || start_zone == zone_array[j].getEnd()){
+                            alreadyAssigned = true;
+                            cout << "The zone row number you entered is already occupied by an existing zone" << endl;
+                        }
+                    }
+                }while(end_zone > l1.getRows() || alreadyAssigned);
+                
+                do{
+                    alreadyAssigned = false;
+                    cout << "Please enter a valid name to your zone: " << endl;
                     cin >> zone_name;
-                    //____________________________________________
+                    for(int j = 0; j < l1.getSize(); j++){
+                        if(zone_name == zone_array[j].getName()){
+                            alreadyAssigned = true;
+                            cout << "The zone name you entered is taken" << endl;
+                        }
+                    }
+                }while(alreadyAssigned);
 
-                }
                 l1.add_zone(start_zone, end_zone, zone_name);
             }
             if (userI == "t") {
-                //delete[] zone_array;
-                //zone_array = l1.getZone();
+                if(zone_array != NULL){
+                    delete[] zone_array;
+                }
+                zone_array = l1.getZone();
 
                 cout << "Please enter the name for the ticket: " << endl;
                 string ticket_name;
@@ -199,7 +201,7 @@ int main() {
                 cout << "Please enter a valid zone the ticket will be in." << endl;
                 cout << "These are the current zones: ";
                 for (int i = 0; i < l1.getSize(); i++) {
-                    //cout << zone_array[i].getName() << ", ";
+                    cout << zone_array[i].getName() << ", ";
                 } cout << endl;
 
                 string ticket_zone;
@@ -208,18 +210,11 @@ int main() {
                 Ticket t = l1.create_ticket(ticket_name, ticket_zone);
 
                 if (outputBinaryFile.is_open()) {
-                    cout << "test";
-                    string nm = t.getName();
-                    const int length = nm.length(); 
-                    char* char_array = new char[length + 1]; 
-                    strcpy(char_array, nm.c_str()); 
-                    //string nm = t.getName();
-
-                    outputBinaryFile.write((char*)&(char_array), sizeof(char));
+                    outputBinaryFile.write((char*)&(t), sizeof(Ticket));
                 }
-                cout << "test1";
             }
         }
+        outputBinaryFile.close();          
     }
     
 

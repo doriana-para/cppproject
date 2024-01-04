@@ -7,7 +7,7 @@ ZoneInfo::ZoneInfo() {
     this->end = -1;
 }
 
-ZoneInfo::ZoneInfo(std::string name, int start, int end) {
+ZoneInfo::ZoneInfo(string name, int start, int end) {
     this->name = name;
     this->start = start;
     this->end = end;
@@ -38,6 +38,7 @@ void ZoneInfo::setEnd(int end) {
 }
 
 void ZoneInfo::operator=(const ZoneInfo z) {
+    this->name = z.name;
     this->start = z.start;
     this->end = z.end;
 }
@@ -55,7 +56,7 @@ void ZoneInfo::operator-(int move_zone) {
 ostream& operator<<(ostream& output, ZoneInfo z) {
     output << "The name of the zone:" << z.name << endl;
     output << "The beginning row: " << z.start << endl;
-    output << "The ending row: " << z.end;
+    output << "The ending row: " << z.end<<endl;
     return output;
 }
 

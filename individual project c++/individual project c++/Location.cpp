@@ -112,19 +112,20 @@ void Location::operator++(int x) {
 void Location::add_ticket(Ticket t) {
     t.check(tickets, amount_of_tickets);//This checks to see if the ticket t has the same ID as any other tickets
 
-    amount_of_tickets++;
-    Ticket* copy_of_tickets = new Ticket[amount_of_tickets];
+    Ticket* copy_of_tickets = new Ticket[amount_of_tickets+1];
     for (int i = 0; i < amount_of_tickets; i++) {
         copy_of_tickets[i] = tickets[i];
     }
 
+    amount_of_tickets++;
+    copy_of_tickets[amount_of_tickets - 1] = t;
     delete[] tickets;
     tickets = copy_of_tickets;
 }
 
 Ticket Location::create_ticket(string name, string zoneName) {
-    int startingRowOfZone;
-    int endingRowOfZone;
+    int startingRowOfZone=0;
+    int endingRowOfZone=0;
     int rowSeat = 0;
     int columnSeat = 0;
 
@@ -148,7 +149,7 @@ Ticket Location::create_ticket(string name, string zoneName) {
 jump:
 
     Ticket t(name, rowSeat, columnSeat, zoneName);
-    //add_ticket(t);
+    add_ticket(t);
     return t;
 }
 
@@ -236,6 +237,14 @@ ZoneInfo* Location::getZone() {
 
 int Location::getSize() {
     return this->size;
+}
+
+int Location::getAmount_of_Tickets() {
+    return this->amount_of_tickets;
+}
+
+Ticket* Location::getTickets() {
+    return this->tickets;
 }
 
 void Location::setseatMap(int** seatMap) {

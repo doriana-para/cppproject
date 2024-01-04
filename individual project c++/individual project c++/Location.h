@@ -40,6 +40,8 @@ public:
     string getDate();
     ZoneInfo* getZone();
     int getSize();
+    int getAmount_of_Tickets();
+    Ticket* getTickets();
 
     void setseatMap(int** seatMap);
     void setNumber_seats(int number_seats);
