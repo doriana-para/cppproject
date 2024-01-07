@@ -54,9 +54,10 @@ void ZoneInfo::operator-(int move_zone) {
 }
 
 ostream& operator<<(ostream& output, ZoneInfo z) {
+    cout << "--ZONE--" << endl;
     output << "The name of the zone:" << z.name << endl;
     output << "The beginning row: " << z.start << endl;
-    output << "The ending row: " << z.end<<endl;
+    output << "The ending row: " << z.end << endl;
     return output;
 }
 

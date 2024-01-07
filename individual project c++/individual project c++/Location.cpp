@@ -18,7 +18,6 @@ Location::Location() {
     cout << "test1";
     //zone_locations[0] = new char[1]; //each pointer in zone_locations is pointing to a new array
 //}
-    this->zone = new ZoneInfo[this->number_seats];
 }
 
 Location::Location(int number_seats, int rows, int time, string date) {
@@ -33,6 +32,12 @@ Location::Location(int number_seats, int rows, int time, string date) {
     seatMap = new int* [rows]; //first pointer gets assigned an array of size rows
     for (int i = 0; i < rows; i++) { //adding the column array to every row
         seatMap[i] = new int[number_seats / rows]; //each pointer in seatMap is pointing to a new array
+    }
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < number_seats / rows; j++) {
+            seatMap[i][j] = 0;
+        }
     }
 
 
@@ -62,10 +67,10 @@ Location::Location(const Location& loc) {
 }
 
 Location::~Location() {
-    /* for (int i = 0; i < rows; i++) {
-             delete[] seatMap[i];
-         }
-         delete[] seatMap;*/
+    /*for (int i = 0; i < rows; i++) {
+        delete[] seatMap[i];
+    }
+    delete[] seatMap;*/
 
     if (this->zone != nullptr) {
         delete[] this->zone;
@@ -112,7 +117,7 @@ void Location::operator++(int x) {
 void Location::add_ticket(Ticket t) {
     t.check(tickets, amount_of_tickets);//This checks to see if the ticket t has the same ID as any other tickets
 
-    Ticket* copy_of_tickets = new Ticket[amount_of_tickets+1];
+    Ticket* copy_of_tickets = new Ticket[amount_of_tickets + 1];
     for (int i = 0; i < amount_of_tickets; i++) {
         copy_of_tickets[i] = tickets[i];
     }
@@ -124,8 +129,8 @@ void Location::add_ticket(Ticket t) {
 }
 
 Ticket Location::create_ticket(string name, string zoneName) {
-    int startingRowOfZone=0;
-    int endingRowOfZone=0;
+    int startingRowOfZone = 0;
+    int endingRowOfZone = 0;
     int rowSeat = 0;
     int columnSeat = 0;
 
@@ -137,9 +142,9 @@ Ticket Location::create_ticket(string name, string zoneName) {
     }
 
     for (int i = startingRowOfZone; i < endingRowOfZone; i++) {
-        for (int j = 0; j <= rows / number_seats; j++) {
+        for (int j = 0; j <= number_seats / rows; j++) {
             if (seatMap[i][j] == 0) {
-                columnSeat = j;   //finding the first available seat in the zone and assign it to a person
+                columnSeat = j + 1;   //finding the first available seat in the zone and assign it to a person
                 seatMap[i][j] = 1;//the seat is assigned
                 rowSeat = i;
                 goto jump;        //getting out of the 2 for loops
@@ -149,12 +154,16 @@ Ticket Location::create_ticket(string name, string zoneName) {
 jump:
 
     Ticket t(name, rowSeat, columnSeat, zoneName);
+    cout << endl << "--TICKET ADDED--" << endl;
+    cout << t;
     add_ticket(t);
     return t;
 }
 
 void Location::add_zone(int start_zone, int end_zone, string zone_name) {
+    updateSeatmap();
     if (zone == nullptr) {
+        
         zone = new ZoneInfo[size + 1];
     }
     ZoneInfo* copy_of_zone = new ZoneInfo[size + 1]; //we initialize copy_of_zone to the new amount of zones
@@ -171,6 +180,8 @@ void Location::add_zone(int start_zone, int end_zone, string zone_name) {
 
     size++;   //we increase the number of zones by 1
     update_zone();
+    cout << endl << "--ZONE ADDED--" << endl;
+    cout << this->zone[size-1];
 }
 
 int Location::find_zone(string zoneName) {
@@ -186,12 +197,20 @@ void Location::update_zone() {  //add the current zones to the bidimensional arr
     int row_lenght;
     char index = 'A';
     row_lenght = number_seats / rows; //the number of seats in a row
-    for (int i = 0; i < size; i++) {  //loop through the zone array
+    /*for (int i = 0; i < size; i++) {  //loop through the zone array
         for (int j = zone[i].getStart(); j < zone[i].getEnd(); j++) { //loop through the rows
             for (int k = 0; k < row_lenght; k++) { //loop through the seats in each row
                 zone_locations[j][k] = index;
             }
             index++;
+        }
+    }*/
+}
+
+void Location::updateSeatmap() {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < (number_seats / rows); j++) {
+            seatMap[i][j] = 0;
         }
     }
 }
@@ -324,6 +343,7 @@ void Location::setZone(ZoneInfo* zone) {
 }
 
 void operator>>(istream& input, Location& l) {
+    
     cout << endl << "Give new location info ";
     cout << "Number of seats: ";
     input >> l.number_seats;
@@ -336,9 +356,10 @@ void operator>>(istream& input, Location& l) {
 }
 
 ostream& operator<<(ostream& os, const Location& l) {
+    cout << "--LOCATION--" << endl;
     os << "The Number of Seats: " << l.number_seats << endl;
     os << "The number of rows: " << l.rows << endl;
     os << "The time of the event: " << l.time << endl;
-    os << "The date of the event: " << l.date<<endl;
+    os << "The date of the event: " << l.date << endl;
     return os;
 }

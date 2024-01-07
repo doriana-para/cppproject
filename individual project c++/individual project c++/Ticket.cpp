@@ -3,14 +3,16 @@
 #include <cstdlib>
 using namespace std;
 
-Ticket::Ticket() : name("") {
+Ticket::Ticket(){
+    this-> name = "";
     this->id = -1;
     this->row_num = -1;
     this->col_num = -1;
     this->zoneName = "";
 }
 
-Ticket::Ticket(string name, int row_num, int col_num, string zoneName) : name(name) {
+Ticket::Ticket(string name, int row_num, int col_num, string zoneName){
+    this->name = name;
     this->row_num = row_num;
     this->col_num = col_num;
     this->zoneName = zoneName;
@@ -19,6 +21,7 @@ Ticket::Ticket(string name, int row_num, int col_num, string zoneName) : name(na
 }
 
 Ticket::Ticket(const Ticket& t) {
+    this->name = t.name;
     this->row_num = t.row_num;
     this->col_num = t.col_num;
     this->zoneName = t.zoneName;
@@ -30,6 +33,7 @@ Ticket::~Ticket() {
 }
 
 void Ticket::operator=(const Ticket t) {
+    this->name = t.name;
     this->id = t.id;
     this->row_num = t.row_num;
     this->col_num = t.col_num;
@@ -37,7 +41,7 @@ void Ticket::operator=(const Ticket t) {
 }
 
 bool Ticket::operator!() {
-    return seat_number == -1;
+    return (row_num == -1 && col_num == -1);
 }
 
 bool Ticket::operator<(Ticket t) {
@@ -53,7 +57,11 @@ void Ticket::check(Ticket* ticket_array, int size_of_ticket_array) {
     }
 }
 
+//virtual method
 
+ void Ticket::printID() {
+    cout << this->id;
+}
 
 int Ticket::getId() {
     return this->id;
@@ -99,32 +107,35 @@ void Ticket::setZoneName(string zoneName) {
     this->zoneName = zoneName;
 }
 
+void Ticket::setName(string name) {
+    this->name = name;
+}
+
 
 void operator>>(istream& input, Ticket& t) {
-    
+
     cout << endl << "Create a new Ticket ";
     cout << endl << "Enter Zone Name: ";
 
-    cout << "The seat number is : ";
-    input >> t.seat_number;
+    cout << "The row seat number is : ";
+    input >> t.row_num;
+    cout << "The col seat number is : ";
+    input >> t.col_num;
     cout << "The zone name is : ";
     input >> t.zoneName;
 }
-   
 
-    ostream& operator<<(ostream& output, const Ticket& t) {
 
-        output << "Your unique ID Number: " << t.id << endl;
-        output << "The name is: " << t.name << endl;
-        output << "The seat number is: " << t.seat_number << endl;
-        output << "The zone number is: " << t.zoneName << endl;
+ostream& operator<<(ostream& output, const Ticket& t) {
+    cout << "--TICKET--" << endl;
 
-        return output;
+    output << "Your unique ID Number: " << t.id << endl;
+    output << "The name is: " << t.name << endl;
+    output << "The row seat number is: " << t.row_num << endl;
+    output << "The col seat number is: " << t.col_num << endl;
+    output << "The zone number is: " << t.zoneName << endl;
 
-    
+    return output;
+
+
 }
-
-
-
-
-
