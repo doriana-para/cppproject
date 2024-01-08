@@ -48,6 +48,32 @@ bool Ticket::operator<(Ticket t) {
     return this->id < t.id;
 }
 
+//These are the necessary functions for reading and writing data from a binary file
+void Ticket::writeToFile(ofstream& outputFile) const {
+    //This adds the ticket name to the binary file
+    outputFile.write(reinterpret_cast<const char*>(&name), sizeof(name));
+    outputFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
+    outputFile.write(reinterpret_cast<const char*>(&row_num), sizeof(row_num));
+    outputFile.write(reinterpret_cast<const char*>(&col_num), sizeof(col_num));
+    outputFile.write(reinterpret_cast<const char*>(&zoneName), sizeof(zoneName));
+}
+
+    // Function to read object data from a binary file
+    //
+void Ticket::readFromFile(ifstream& inputFile) {
+    //This adds the name to ticket
+    inputFile.read(reinterpret_cast<char*>(&name), sizeof(name));
+    //This adds the id number to ticket
+    inputFile.read(reinterpret_cast<char*>(&id), sizeof(id));
+    //This adds the row number to ticket
+    inputFile.read(reinterpret_cast<char*>(&row_num), sizeof(row_num));
+    //This adds the col number to ticket
+    inputFile.read(reinterpret_cast<char*>(&col_num), sizeof(col_num));    
+    //This adds the zone name to ticket
+    inputFile.read(reinterpret_cast<char*>(&zoneName), sizeof(zoneName));
+}
+
+
 void Ticket::check(Ticket* ticket_array, int size_of_ticket_array) {
     for (int i = 0; i < size_of_ticket_array; i++) {
         if (this->id == ticket_array[i].id) {
@@ -139,3 +165,30 @@ ostream& operator<<(ostream& output, const Ticket& t) {
 
 
 }
+
+
+class Ticket_VIP:public Ticket{
+
+public:
+    Ticket_VIP() {
+        this->name = "";
+        this->id = -1;
+        this->row_num = -1;
+        this->col_num = -1;
+        this->zoneName = "";
+    }
+
+    Ticket_VIP(string name, int row_num, int col_num, string zoneName) {
+        this->name = name;
+        this->row_num = row_num;
+        this->col_num = col_num;
+        this->zoneName = zoneName;
+        srand(time(NULL));
+        this->id = rand();
+    }
+
+    void printID() {
+        cout << this->id;
+    }
+
+};

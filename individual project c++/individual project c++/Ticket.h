@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 class Ticket {
 private:
@@ -22,6 +23,9 @@ public:
     void operator=(const Ticket t);
     bool operator!();
     bool operator<(Ticket t);
+
+    void writeToFile(ofstream& outputFile) const;
+    void readFromFile(ifstream& inputFile);
 
     void check(Ticket* ticket_array, int size_of_ticket_array);
     virtual void printID();

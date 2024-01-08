@@ -21,11 +21,38 @@ int main() {
     ZoneInfo* ticket_zone_array = nullptr;
     ofstream outputBinaryFile("Ticket_data.bin", ios::out | ios::binary);
 
+    //boolean variable for checking ticket numbers
+    bool good = false;
+
+    //Make code to read an output file, and then save the info into the ticket array apart of the location class
+
+    Ticket t("Maria", 3, 4, "COOL");
+    ifstream rf("Ticket_data.bin", ios::out | ios::binary);
+
+     while (!rf.eof()) {
+        t.readFromFile(rf);
+        cout << t;
+        l1.add_ticket(t);
+     }
+
+
+    ifstream inputFile("readMe.txt", ifstream::in);
+
     //Read from text file
 
     if (userI == "f") {
+
+        
         string event_info;
-        ifstream inputFile("readMe.txt", ifstream::in);
+        cout << "Please enter the name of a file: " << endl;
+        string file_name;
+        cin >> file_name;
+        try{
+            ifstream inputFile(file_name, ifstream::in);
+        }catch(...){
+            cout << "Invalid file name" << endl;
+            exit;
+        }
 
         //In order to run all the code, we need to make location first
         inputFile >> event_info;
@@ -48,7 +75,6 @@ int main() {
             cout << "Sorry, we can not continue until you have LOCATION as the first command" << endl;
 
         }
-
 
         while (!inputFile.eof()) {
             string event_info = " ";
@@ -82,7 +108,7 @@ int main() {
 
 
                 if (outputBinaryFile.is_open()) {
-                    outputBinaryFile.write((char*)&(t1), sizeof(Ticket));
+                    t1.writeToFile(outputBinaryFile);
 
 
                 }
@@ -111,7 +137,7 @@ int main() {
 
         while (userI != "q") { //q if for quit
 
-            cout << "What would you like to do? (new zone('z'), new ticket ('t') or quit ('q'))" << endl;
+            cout << "What would you like to do? (new zone('z'), new ticket ('t'), check ticket('c') or quit ('q'))" << endl;
             //
             cin >> userI;
             if (userI == "q") {
@@ -207,8 +233,28 @@ int main() {
                 Ticket t = l1.create_ticket(ticket_name, ticket_zone);
 
                 if (outputBinaryFile.is_open()) {
-                    outputBinaryFile.write((char*)&(t), sizeof(Ticket));
+                    t.writeToFile(outputBinaryFile);
                 }
+            }
+            //This is the code to check a ticket
+            if(userI == "c"){
+                cout << "Please enter your name and ticket ID" << endl;
+                string check_name;
+                int check_id;
+                
+                good = false;
+                cin >> check_name;
+                cin >> check_id;
+                for(int i = 0; i < l1.getAmount_of_Tickets(); i++){
+                    if(l1.getTickets()[i].getName() == check_name && l1.getTickets()[i].getId() == check_id){
+                        cout << "Valid ticket" << endl;
+                        good = true;
+                    }
+                }
+                if(!good){
+                    cout << "Invalid ticket" << endl;
+                }
+                
             }
         }
         outputBinaryFile.close();
