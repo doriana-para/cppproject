@@ -151,12 +151,15 @@ Ticket Location::create_ticket(string name, string zoneName) {
             }
         }
     }
+    cout << "No tickets available in this zone" << endl;
 jump:
 
     Ticket t(name, rowSeat, columnSeat, zoneName);
     cout << endl << "--TICKET ADDED--" << endl;
     cout << t;
-    add_ticket(t);
+    if(columnSeat != 0){
+        add_ticket(t);
+    }
     return t;
 }
 

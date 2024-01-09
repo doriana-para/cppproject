@@ -27,16 +27,14 @@ int main() {
     //Make code to read an output file, and then save the info into the ticket array apart of the location class
 
     Ticket t("Maria", 3, 4, "COOL");
-    ifstream rf("Ticket_data.bin", ios::out | ios::binary);
+    ifstream rf("Ticket_data.bin", ios::in | ios::binary);
 
-     while (!rf.eof()) {
-        t.readFromFile(rf);
+     while (t.readFromFile(rf)) {
         cout << t;
         l1.add_ticket(t);
      }
 
-
-    ifstream inputFile("readMe.txt", ifstream::in);
+    ifstream inputFile;
 
     //Read from text file
 
@@ -45,10 +43,34 @@ int main() {
         
         string event_info;
         cout << "Please enter the name of a file: " << endl;
+
+        cout << "Choose the type of event you want to attend: concert, football, movie, theater "<<endl;
+    
         string file_name;
         cin >> file_name;
+
+        if(file_name == "concert"){
+            file_name = "concert.txt";
+        }
+        else if (file_name == "football") {
+            file_name = "football.txt";
+        }
+
+        else if (file_name == "movie") {
+            file_name = "movie.txt";
+
+        }
+        else if (file_name == "theater") {
+            file_name = "theater.txt";
+        }
+
         try{
-            ifstream inputFile(file_name, ifstream::in);
+            inputFile.open(file_name);
+            if(inputFile.is_open()){
+                cout << "File is open" << endl;
+            }else{
+                cout << "File is not open" << endl;
+            }
         }catch(...){
             cout << "Invalid file name" << endl;
             exit;
@@ -70,8 +92,7 @@ int main() {
             l1.setTime(time);
             l1.setDate(event_info);
             cout << l1;
-        }
-        else {
+        }else {
             cout << "Sorry, we can not continue until you have LOCATION as the first command" << endl;
 
         }
@@ -104,13 +125,9 @@ int main() {
                 inputFile >> event_info;
                 string zoneName = event_info;
 
-                Ticket t1 = l1.create_ticket(name, zoneName);
-
-
                 if (outputBinaryFile.is_open()) {
-                    t1.writeToFile(outputBinaryFile);
-
-
+                    Ticket t1 = l1.create_ticket(name, zoneName);
+                    t.writeToFile(outputBinaryFile);
                 }
             }
         }
@@ -228,11 +245,8 @@ int main() {
                     }   
                 } while (ok == 1);
 
-
-
-                Ticket t = l1.create_ticket(ticket_name, ticket_zone);
-
                 if (outputBinaryFile.is_open()) {
+                    Ticket t = l1.create_ticket(ticket_name, ticket_zone);
                     t.writeToFile(outputBinaryFile);
                 }
             }

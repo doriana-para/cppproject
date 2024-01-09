@@ -60,17 +60,25 @@ void Ticket::writeToFile(ofstream& outputFile) const {
 
     // Function to read object data from a binary file
     //
-void Ticket::readFromFile(ifstream& inputFile) {
-    //This adds the name to ticket
-    inputFile.read(reinterpret_cast<char*>(&name), sizeof(name));
-    //This adds the id number to ticket
-    inputFile.read(reinterpret_cast<char*>(&id), sizeof(id));
-    //This adds the row number to ticket
-    inputFile.read(reinterpret_cast<char*>(&row_num), sizeof(row_num));
-    //This adds the col number to ticket
-    inputFile.read(reinterpret_cast<char*>(&col_num), sizeof(col_num));    
-    //This adds the zone name to ticket
-    inputFile.read(reinterpret_cast<char*>(&zoneName), sizeof(zoneName));
+bool Ticket::readFromFile(ifstream& inputFile) {
+    // This adds the name to the ticket
+    if (!inputFile.read(reinterpret_cast<char*>(&name), sizeof(name)))
+        return false;
+    // This adds the id number to the ticket
+    if (!inputFile.read(reinterpret_cast<char*>(&id), sizeof(id)))
+        return false;
+    // This adds the row number to the ticket
+    if (!inputFile.read(reinterpret_cast<char*>(&row_num), sizeof(row_num)))
+        return false;
+    // This adds the col number to the ticket
+    if (!inputFile.read(reinterpret_cast<char*>(&col_num), sizeof(col_num)))
+        return false;
+    // This adds the zone name to the ticket
+    if (!inputFile.read(reinterpret_cast<char*>(&zoneName), sizeof(zoneName)))
+        return false;
+    
+    // If all reads were successful, return true
+    return true;
 }
 
 

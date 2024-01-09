@@ -25,7 +25,7 @@ public:
     bool operator<(Ticket t);
 
     void writeToFile(ofstream& outputFile) const;
-    void readFromFile(ifstream& inputFile);
+    bool readFromFile(ifstream& inputFile);
 
     void check(Ticket* ticket_array, int size_of_ticket_array);
     virtual void printID();
