@@ -1,5 +1,7 @@
-#pragma once
-#include <iostream>
+#ifndef LOCATION 
+#define LOCATION
+#include<iostream>
+
 #include "ZoneInfo.h"
 #include "Ticket.h"
 using namespace std;
@@ -54,3 +56,5 @@ public:
     friend void operator>>(istream& input, Location& l);
     friend ostream& operator<<(ostream& os, const Location& l);
 };
+
+#endif

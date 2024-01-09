@@ -10,6 +10,8 @@ using namespace std;
 
 int main() {
 
+    srand(time(NULL));
+
     //Adding an interface
 
     cout << "Welcome! Would you like to use a text file (type 'f') or user input (type 'i')" << endl;
@@ -44,7 +46,7 @@ int main() {
         string event_info;
         cout << "Please enter the name of a file: " << endl;
 
-        cout << "Choose the type of event you want to attend: concert, football, movie, theater "<<endl;
+        cout << "Choose the type of event you want to attend: type 'concert', 'football', 'movie' or 'theater' " <<endl;
     
         string file_name;
         cin >> file_name;

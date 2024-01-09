@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ZONEINFO 
+#define ZONEINFO
 #include <iostream>
 #include <string>
 
@@ -27,3 +28,4 @@ public:
     friend std::ostream& operator<<(std::ostream& output, ZoneInfo z);
     friend void operator>>(std::istream& input, ZoneInfo& z);
 };
+#endif

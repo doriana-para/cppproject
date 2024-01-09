@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TICKET 
+#define TICKET
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -48,3 +49,4 @@ public:
     friend ostream& operator<<(ostream& output, const Ticket& t);
 
 };
+#endif

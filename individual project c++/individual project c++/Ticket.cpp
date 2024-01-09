@@ -16,7 +16,6 @@ Ticket::Ticket(string name, int row_num, int col_num, string zoneName){
     this->row_num = row_num;
     this->col_num = col_num;
     this->zoneName = zoneName;
-    srand(time(NULL));
     this->id = rand();
 }
 

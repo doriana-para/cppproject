@@ -26,7 +26,7 @@ Location::Location(int number_seats, int rows, int time, string date) {
     this->rows = rows;
     this->time = time;
     this->date = date;
-    this->zone = nullptr;
+    this->zone = new ZoneInfo[1];
 
 
     seatMap = new int* [rows]; //first pointer gets assigned an array of size rows
@@ -165,13 +165,10 @@ jump:
 
 void Location::add_zone(int start_zone, int end_zone, string zone_name) {
     updateSeatmap();
-    
-    if (zone == nullptr) {
-        zone = new ZoneInfo[size + 1];
-    }
+ 
     
 
-    ZoneInfo* copy_of_zone = new ZoneInfo[size + 1]; //we initialize copy_of_zone to the new amount of zones
+    ZoneInfo* copy_of_zone = new ZoneInfo[size+1 ]; //we initialize copy_of_zone to the new amount of zones
 
     for (int i = 0; i < size; i++) {  //copies by value zone to copy_of_zone
         copy_of_zone[i] = zone[i];
