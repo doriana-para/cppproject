@@ -229,10 +229,10 @@ int main() {
                 string ticket_zone;
                 int ok = 0;
                 do {
-                    cout << "Please enter a valid zone the ticket will be in." << endl;
+                    cout << "Please enter a valid zone the ticket will be in: " << endl;
                     cout << "These are the current zones: ";
                     for (int i = 0; i < l1.getSize(); i++) {
-                        cout << l1.getZone()[i].getName() << ", ";
+                        cout << l1.getZone()[i].getName() <<" ";
                     } cout << endl;
 
                     cin >> ticket_zone;
@@ -254,7 +254,7 @@ int main() {
             }
             //This is the code to check a ticket
             if(userI == "c"){
-                cout << "Please enter your name and ticket ID" << endl;
+                cout << "Please enter your name and ticket ID: " << endl;
                 string check_name;
                 int check_id;
                 
